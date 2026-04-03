@@ -1,6 +1,9 @@
 let DATA = [];
 let currentTrackIndex = -1;
 let activeCategory = "Tous";
+let itemsPerPage = 10;
+let currentPage = 1;
+let isLoading = false;
 
 const audio = document.getElementById("audioElement");
 const grid = document.getElementById("trackGrid");
@@ -61,10 +64,7 @@ function toggleFavorite(index, event) {
     renderLibrary();
 }
 
-
-
 // RENDU CARTES AVEC IMAGES ALÉATOIRES
-// Liste d'icônes SVG (Path) pour le style
 const islamicIcons = [
     '<path d="M12 2L9 9H2l5.5 4L5 22l7-5 7 5-2.5-9 5.5-4h-7z"/>', // Étoile
     '<path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>', // Croissant
@@ -103,17 +103,41 @@ function createCard(t, globalIndex) {
     return card;
 }
 
-function render() {
+// FONCTION RENDER AVEC PAGINATION (INFINITE SCROLL)
+function render(append = false) {
   if (!grid) return;
   const filterText = searchInput.value.toLowerCase();
-  grid.innerHTML = "";
-  DATA.forEach((t, index) => {
-    const mS =
-      t.title.toLowerCase().includes(filterText) ||
-      t.artist.toLowerCase().includes(filterText);
+  const loader = document.getElementById("scrollLoader");
+  
+  if (!append) {
+      grid.innerHTML = "";
+      currentPage = 1;
+  }
+
+  // Filtrage
+  const filteredData = DATA.filter(t => {
+    const mS = t.title.toLowerCase().includes(filterText) || t.artist.toLowerCase().includes(filterText);
     const mC = activeCategory === "Tous" || t.category === activeCategory;
-    if (mS && mC) grid.appendChild(createCard(t, index));
+    return mS && mC;
   });
+
+  // Calcul des tranches pour la pagination
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const paginatedData = filteredData.slice(start, end);
+
+  paginatedData.forEach((t) => {
+    // Utilisation de indexOf pour garantir que l'index global est correct pour le player
+    const globalIndex = DATA.indexOf(t);
+    grid.appendChild(createCard(t, globalIndex));
+  });
+
+  // Gestion de la visibilité du loader
+  if (loader) {
+    loader.style.display = (end >= filteredData.length) ? "none" : "flex";
+  }
+  
+  isLoading = false;
 }
 
 function renderLibrary() {
@@ -135,7 +159,7 @@ function initFilters() {
     chip.onclick = () => {
       activeCategory = cat;
       initFilters();
-      render();
+      render(); // Reset et affiche la catégorie
     };
     filterBar.appendChild(chip);
   });
@@ -153,9 +177,7 @@ function playTrack(index) {
   player.classList.add("visible");
 }
 
-// Gestion des icônes basée sur l'état RÉEL de l'audio
 audio.onplay = () => {
-  // On s'assure d'injecter le PATH à l'intérieur du SVG existant
   playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="#00f2ff"/>';
   visualizer.classList.add("active");
 };
@@ -190,50 +212,72 @@ themeToggle.onclick = () => {
   document.body.setAttribute("data-theme", cur === "dark" ? "light" : "dark");
 };
 
-searchInput.oninput = render;
+searchInput.oninput = () => {
+    currentPage = 1;
+    render();
+};
+
 loadMusicData();
 
-// On récupère les éléments
+// MENU BURGER ET SIDEBAR
 const burgerBtn = document.getElementById("burgerBtn");
 const sidebar = document.getElementById("sidebar");
 
 if (burgerBtn && sidebar) {
-  // CLIC SUR LE BURGER
   burgerBtn.onclick = (e) => {
     e.stopPropagation();
     sidebar.classList.toggle("open");
-    // Optionnel : on change l'apparence du burger
     burgerBtn.classList.toggle("active");
   };
 
-  // CLIC SUR UN LIEN DU MENU (Ferme le menu après clic)
   const menuLinks = document.querySelectorAll(".menu-item");
   menuLinks.forEach((link) => {
     link.addEventListener("click", () => {
       sidebar.classList.remove("open");
+      burgerBtn.classList.remove("active");
     });
   });
 }
 
-// Fermer si on clique sur le contenu principal (Main)
 document.querySelector("main").onclick = () => {
-  if (sidebar.classList.contains("open")) sidebar.classList.remove("open");
+  if (sidebar && sidebar.classList.contains("open")) {
+      sidebar.classList.remove("open");
+      if(burgerBtn) burgerBtn.classList.remove("active");
+  }
 };
-
 
 // FONCTION POUR FERMER LE LECTEUR
 function closePlayer() {
     if (audio) {
-        audio.pause(); // On arrête la musique
-        audio.currentTime = 0; // On remet au début
+        audio.pause();
+        audio.currentTime = 0;
     }
-    
     if (player) {
-        player.classList.remove("visible"); // On cache le player avec l'animation existante
+        player.classList.remove("visible");
     }
-    
-    // On arrête aussi le visualiseur
     if (visualizer) {
         visualizer.classList.remove("active");
     }
 }
+
+// LOGIQUE D'INFINITE SCROLL SUR LE MAIN
+const mainElement = document.querySelector("main");
+mainElement.onscroll = () => {
+    if (isLoading) return;
+
+    if (mainElement.scrollTop + mainElement.clientHeight >= mainElement.scrollHeight - 100) {
+        const filterText = searchInput.value.toLowerCase();
+        const filteredCount = DATA.filter(t => {
+            const mS = t.title.toLowerCase().includes(filterText) || t.artist.toLowerCase().includes(filterText);
+            const mC = activeCategory === "Tous" || t.category === activeCategory;
+            return mS && mC;
+        }).length;
+
+        if (currentPage * itemsPerPage < filteredCount) {
+            isLoading = true;
+            currentPage++;
+            // Le loader s'affiche via le CSS pendant ce petit délai
+            setTimeout(() => render(true), 600);
+        }
+    }
+};

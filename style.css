@@ -706,3 +706,34 @@ main::-webkit-scrollbar-thumb {
         right: 15px;
     }
 }
+
+/* --- LOADER INFINITE SCROLL --- */
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 30px;
+    width: 100%;
+    color: var(--cyber-cyan);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+}
+
+.cyber-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid transparent;
+    border-top: 3px solid var(--cyber-cyan);
+    border-right: 3px solid var(--cyber-pink);
+    border-radius: 50%;
+    animation: cyber-spin 1s linear infinite;
+    filter: drop-shadow(0 0 10px var(--cyber-cyan));
+}
+
+@keyframes cyber-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
