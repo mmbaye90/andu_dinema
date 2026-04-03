@@ -153,13 +153,15 @@ function playTrack(index) {
   player.classList.add("visible");
 }
 
+// Gestion des icônes basée sur l'état RÉEL de l'audio
 audio.onplay = () => {
-  playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+  // On s'assure d'injecter le PATH à l'intérieur du SVG existant
+  playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="#00f2ff"/>';
   visualizer.classList.add("active");
 };
 
 audio.onpause = () => {
-  playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+  playIcon.innerHTML = '<path d="M8 5v14l11-7z" fill="#00f2ff"/>';
   visualizer.classList.remove("active");
 };
 
@@ -217,3 +219,21 @@ if (burgerBtn && sidebar) {
 document.querySelector("main").onclick = () => {
   if (sidebar.classList.contains("open")) sidebar.classList.remove("open");
 };
+
+
+// FONCTION POUR FERMER LE LECTEUR
+function closePlayer() {
+    if (audio) {
+        audio.pause(); // On arrête la musique
+        audio.currentTime = 0; // On remet au début
+    }
+    
+    if (player) {
+        player.classList.remove("visible"); // On cache le player avec l'animation existante
+    }
+    
+    // On arrête aussi le visualiseur
+    if (visualizer) {
+        visualizer.classList.remove("active");
+    }
+}

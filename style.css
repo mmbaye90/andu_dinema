@@ -449,3 +449,260 @@ body.collapsed #toggleIcon { transform: rotate(180deg); }
         display: block !important;
     }
 }
+
+/* ============================================================
+   AJOUT STYLE CYBERPUNK (SANS CASSER LE NEUMORPHISME)
+   ============================================================ */
+
+:root {
+    /* Nouvelles variables Cyberpunk Néon */
+    --cyber-cyan: #00ffff;
+    --cyber-pink: #ff0055;
+    --cyber-yellow: #fff300;
+    --cyber-blue: #0066ff;
+    
+    /* Glows (Lumières) */
+    --glow-cyan: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.4);
+    --glow-pink: 0 0 10px rgba(255, 0, 85, 0.7), 0 0 20px rgba(255, 0, 85, 0.4);
+}
+
+/* --- Base Cyber --- */
+body {
+    /* Petit effet de scanline très subtil en fond */
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.05) 50%, transparent 50%);
+    background-size: 100% 4px;
+}
+
+/* --- Sidebar Cyber --- */
+.brand .dot {
+    background: var(--cyber-cyan) !important;
+    box-shadow: var(--glow-cyan) !important;
+    animation: cyber-pulse 2s infinite alternate;
+}
+
+.brand span {
+    color: var(--cyber-cyan);
+    text-shadow: var(--glow-cyan);
+    font-family: 'Courier New', Courier, monospace; /* Police plus "code" */
+    letter-spacing: -1px;
+}
+
+.menu-item.active {
+    border-left: 3px solid var(--cyber-pink);
+    color: var(--cyber-pink) !important;
+    text-shadow: var(--glow-pink);
+    box-shadow: var(--nm-shadow-in), 0 0 15px rgba(255, 0, 85, 0.2) !important;
+}
+
+.menu-item.active svg {
+    fill: var(--cyber-pink) !important;
+    filter: drop-shadow(0 0 5px var(--cyber-pink));
+}
+
+/* --- Cards Cyber --- */
+.track-card:hover {
+    border-color: rgba(0, 255, 255, 0.3) !important;
+    box-shadow: var(--nm-shadow-out), 0 0 15px rgba(0, 255, 255, 0.1) !important;
+}
+
+/* --- Barre de Recherche & Filtres Cyber --- */
+.search-box input:focus {
+    box-shadow: var(--nm-shadow-in), 0 0 10px rgba(0, 255, 255, 0.3) !important;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.filter-chip.active {
+    background: linear-gradient(145deg, var(--cyber-blue), #000);
+    color: white !important;
+    box-shadow: var(--nm-shadow-out), 0 0 10px rgba(0, 102, 255, 0.5) !important;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+/* --- FIX TOTAL DES BOUTONS DU PLAYER (Rendus visibles et Cyber) --- */
+
+/* Conteneur des boutons de transport */
+.playback-btns {
+    gap: 20px !important;
+}
+
+/* Style commun pour TOUS les boutons svg du player (prev, next, play, pause) */
+.playback-btns .btn svg,
+.playback-btns .play-main svg {
+    fill: var(--text-main) !important; /* Force la visibilité par défaut */
+    width: 24px !important;
+    height: 24px !important;
+    transition: all 0.3s ease;
+}
+
+/* Bouton Play/Pause Principal */
+.play-main {
+    background: linear-gradient(145deg, #101010, #202020) !important;
+    box-shadow: var(--nm-shadow-out) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.play-main svg {
+    fill: var(--cyber-cyan) !important; /* Cyan néon pour le play */
+    filter: drop-shadow(0 0 5px var(--cyber-cyan));
+}
+
+.play-main:hover {
+    box-shadow: var(--nm-shadow-out), var(--glow-cyan) !important;
+    transform: scale(1.05);
+}
+
+.play-main:active {
+    box-shadow: var(--nm-shadow-in) !important;
+}
+
+/* Boutons Précédent / Suivant (btn) */
+.playback-btns .btn {
+    background: transparent !important;
+    box-shadow: none !important; /* On enlève l'ombre neumorphe pour un look plus épuré */
+}
+
+.playback-btns .btn svg {
+    fill: var(--text-dim) !important;
+    opacity: 0.7;
+}
+
+.playback-btns .btn:hover svg {
+    fill: var(--cyber-pink) !important;
+    opacity: 1;
+    filter: drop-shadow(0 0 5px var(--cyber-pink));
+    transform: scale(1.1);
+}
+
+/* --- Barre de Progression Cyber --- */
+.progress-bar {
+    background: #050505 !important;
+    box-shadow: inset 2px 2px 5px #000, inset -1px -1px 2px #222 !important;
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-cyan)) !important;
+    box-shadow: 0 0 10px var(--cyber-cyan) !important;
+    position: relative;
+}
+
+/* Petit "curseur" de progression lumineux */
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 15px white, 0 0 5px var(--cyber-cyan);
+}
+
+/* --- Visualizer Cyber --- */
+.visualizer span {
+    background: rgba(0, 255, 255, 0.3) !important;
+}
+
+.visualizer.active span {
+    background: var(--cyber-cyan) !important;
+    box-shadow: var(--glow-cyan) !important;
+}
+
+/* Animations */
+@keyframes cyber-pulse {
+    from { opacity: 0.6; filter: brightness(1); }
+    to { opacity: 1; filter: brightness(1.2); }
+}
+
+:root {
+    --cyber-cyan: #00f2ff;
+    --cyber-pink: #ff007a;
+    --cyber-border: rgba(0, 242, 255, 0.5);
+}
+
+/* --- EFFET DE BORDURE LUMINEUSE SUR LES CARTES --- */
+.track-card {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.track-card:hover {
+    border: 1px solid var(--cyber-cyan);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2), var(--nm-shadow-out) !important;
+    transform: translateY(-5px);
+}
+
+/* --- BARRE DE PROGRESSION NEON --- */
+.progress-bar {
+    background: #000 !important;
+    height: 6px !important;
+    border: 1px solid rgba(0, 242, 255, 0.2);
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--cyber-pink), var(--cyber-cyan)) !important;
+    box-shadow: 0 0 15px var(--cyber-cyan);
+}
+
+/* --- TEXTES FLASHY --- */
+.t-title {
+    color: var(--cyber-cyan);
+    text-shadow: 0 0 5px rgba(0, 242, 255, 0.5);
+}
+
+.brand span {
+    color: var(--cyber-pink);
+    text-shadow: 0 0 10px var(--cyber-pink);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* --- SCROLLBAR CYBERPUNK --- */
+main::-webkit-scrollbar {
+    width: 5px;
+}
+main::-webkit-scrollbar-thumb {
+    background: var(--cyber-cyan);
+    box-shadow: 0 0 10px var(--cyber-cyan);
+    border-radius: 10px;
+}
+
+
+/* --- BOUTON FERMER PLAYER (CYBER-STYLE) --- */
+.close-player {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 32px;
+    height: 32px;
+    background: var(--card-bg);
+    border: 1px solid var(--cyber-pink); /* Accent rose pour le bouton fermer */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--nm-shadow-sm), 0 0 10px rgba(255, 0, 122, 0.3);
+    z-index: 2100;
+    transition: 0.3s;
+}
+
+.close-player svg {
+    width: 18px;
+    fill: var(--cyber-pink) !important;
+}
+
+.close-player:hover {
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 0 15px var(--cyber-pink);
+}
+
+/* Sur mobile, on l'agrandit un peu pour le confort */
+@media (max-width: 768px) {
+    .close-player {
+        top: 5px;
+        right: 15px;
+    }
+}
