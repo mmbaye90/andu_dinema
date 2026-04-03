@@ -71,37 +71,32 @@
         </button>
       </nav>
     </aside>
-    <main>
-      <div id="page-home" class="page active">
+<main>
+    <div id="page-home" class="page active">
         <div class="header-section">
-          <h1>Andu-Dinema  &nbsp;&nbsp;<span style="font-size: 1.2rem;">🔍</span></h1>
-          <div class="search-box">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-              />
-            </svg>
-            <input type="text" id="searchInput" placeholder="Rechercher..." />
-          </div>
+            <h1>Andu-Dinema &nbsp;&nbsp;<span style="font-size: 1.2rem;">🔍</span></h1>
+            <div class="search-box">
+                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" id="searchInput" placeholder="Rechercher..." />
+            </div>
         </div>
         <div class="filter-bar" id="filterBar"></div>
+        
         <div class="track-grid" id="trackGrid"></div>
-        <div class="track-grid" id="trackGrid"></div>
-        <div id="scrollLoader" class="loader-container" style="display: none">
-          <div class="cyber-spinner"></div>
-          <span>Chargement des ondes...</span>
-        </div>
-      </div>
 
-      <div id="page-library" class="page">
+        <div id="scrollLoader" class="loader-container" style="display: none">
+            <div class="cyber-spinner"></div>
+            <span>Chargement des ondes...</span>
+        </div>
+    </div>
+
+    <div id="page-library" class="page">
         <div class="header-section">
-          <h1>Ma Bibliothèque</h1>
+            <h1>Ma Bibliothèque</h1>
         </div>
         <div class="track-grid" id="libraryGrid"></div>
-      </div>
-    </main>
-
-    <div class="player-wrapper" id="player">
+    </div>
+</main>    <div class="player-wrapper" id="player">
       <button class="close-player" onclick="closePlayer()">
         <svg viewBox="0 0 24 24">
           <path

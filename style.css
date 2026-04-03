@@ -737,3 +737,25 @@ main::-webkit-scrollbar-thumb {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* --- SYSTÈME DE NAVIGATION (SPA) --- */
+main {
+    position: relative;
+    height: 100vh;
+    overflow-y: auto; /* Le scroll se fait uniquement ici */
+}
+
+.page {
+    display: none; /* Cache toutes les pages par défaut */
+    width: 100%;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.page.active {
+    display: block; /* Affiche uniquement la page qui a la classe .active */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

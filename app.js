@@ -44,17 +44,22 @@ async function loadMusicData() {
 
 // NAVIGATION
 function showPage(pageId) {
-  document
-    .querySelectorAll(".page")
-    .forEach((p) => p.classList.remove("active"));
+  // Masque toutes les pages
+  document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+  // Affiche la page demandée
   document.getElementById(`page-${pageId}`).classList.add("active");
-  document
-    .querySelectorAll(".menu-item")
-    .forEach((m) => m.classList.remove("active"));
+  
+  // Gère l'état visuel du menu (boutons actifs)
+  document.querySelectorAll(".menu-item").forEach((m) => m.classList.remove("active"));
   document.getElementById(`nav-${pageId}`).classList.add("active");
+
+  // Remonte le scroll en haut à chaque changement de page
+  const mainElement = document.querySelector("main");
+  if (mainElement) mainElement.scrollTop = 0;
+
+  // Si on va sur la bibliothèque, on lance son rendu spécifique
   if (pageId === "library") renderLibrary();
 }
-
 // FAVORIS
 function toggleFavorite(index, event) {
   event.stopPropagation();
@@ -263,7 +268,10 @@ function closePlayer() {
 // LOGIQUE D'INFINITE SCROLL SUR LE MAIN
 const mainElement = document.querySelector("main");
 mainElement.onscroll = () => {
-    if (isLoading) return;
+    const isHomeActive = document.getElementById("page-home").classList.contains("active");
+    
+    // CONDITION : On ne déclenche le chargement infini QUE si on est sur l'ACCUEIL
+    if (isLoading || !isHomeActive) return;
 
     if (mainElement.scrollTop + mainElement.clientHeight >= mainElement.scrollHeight - 100) {
         const filterText = searchInput.value.toLowerCase();
@@ -276,7 +284,6 @@ mainElement.onscroll = () => {
         if (currentPage * itemsPerPage < filteredCount) {
             isLoading = true;
             currentPage++;
-            // Le loader s'affiche via le CSS pendant ce petit délai
             setTimeout(() => render(true), 600);
         }
     }
