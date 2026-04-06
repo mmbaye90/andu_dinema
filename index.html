@@ -2,16 +2,18 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>andu-dinema</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+      (function() {
+        emailjs.init("noRqDUH8plXY7dL1b"); // Ta clé publique
+      })();
+    </script>
+    
   </head>
   <body data-theme="dark" id="mainBody">
     <button class="burger-menu" id="burgerBtn">
@@ -26,122 +28,108 @@
         </div>
         <div class="side-controls">
           <button class="theme-toggle" id="themeToggle">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"
-              />
-            </svg>
+            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
           </button>
           <button class="theme-toggle" id="sidebarToggle">
-            <svg viewBox="0 0 24 24" id="toggleIcon">
-              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-            </svg>
+            <svg viewBox="0 0 24 24" id="toggleIcon"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
           </button>
         </div>
       </div>
 
       <nav class="menu">
-        <button
-          onclick="
-            showPage('home');
-            closeBurger();
-          "
-          class="menu-item active"
-          id="nav-home"
-        >
-          <svg viewBox="0 0 24 24">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-          </svg>
+        <button onclick="showPage('home');" class="menu-item active" id="nav-home">
+          <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" /></svg>
           <span class="nav-text">Accueil</span>
         </button>
-        <button
-          onclick="
-            showPage('library');
-            closeBurger();
-          "
-          class="menu-item"
-          id="nav-library"
-        >
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-            />
-          </svg>
+        <button onclick="showPage('library');" class="menu-item" id="nav-library">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
           <span class="nav-text">Favoris</span>
         </button>
       </nav>
+
+      <div class="sidebar-footer">
+        <img src="assets/logombaye.png" alt="Logo" class="mini-logo">
+        <button class="contact-trigger" onclick="toggleContactModal(true)">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <span class="nav-text">Contact</span>
+        </button>
+        <p class="nav-text copyright-text">© 2026 Mbaye</p>
+      </div>
     </aside>
-<main>
-    <div id="page-home" class="page active">
+
+    <main>
+      <div id="page-home" class="page active">
         <div class="header-section">
-            <h1>Andu-Dinema &nbsp;&nbsp;<span style="font-size: 1.2rem;">🔍</span></h1>
-            <div class="search-box">
-                <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                <input type="text" id="searchInput" placeholder="Rechercher..." />
-            </div>
+          <h1>Andu-Dinema &nbsp;&nbsp;<span style="font-size: 1.2rem;">🔍</span></h1>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="text" id="searchInput" placeholder="Rechercher..." />
+          </div>
         </div>
         <div class="filter-bar" id="filterBar"></div>
-        
         <div class="track-grid" id="trackGrid"></div>
-
         <div id="scrollLoader" class="loader-container" style="display: none">
-            <div class="cyber-spinner"></div>
-            <span>Chargement des ondes...</span>
+          <div class="cyber-spinner"></div>
+          <span>Chargement...</span>
         </div>
-    </div>
+      </div>
 
-    <div id="page-library" class="page">
+      <div id="page-library" class="page">
         <div class="header-section">
-            <h1>Ma Bibliothèque</h1>
+          <h1>Ma Bibliothèque</h1>
         </div>
         <div class="track-grid" id="libraryGrid"></div>
-    </div>
-</main>    <div class="player-wrapper" id="player">
-      <button class="close-player" onclick="closePlayer()">
-        <svg viewBox="0 0 24 24">
-          <path
-            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-          />
-        </svg>
-      </button>
+      </div>
+    </main>
 
+    <div id="contactModal" class="modal-overlay" onclick="toggleContactModal(false)">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="toggleContactModal(false)">&times;</button>
+        <img src="assets/logombaye.png" alt="Logo" class="modal-logo">
+        <h2>Contactez-moi</h2>
+        
+        <form id="contactForm">
+          <div class="form-group">
+            <input type="text" name="last_name" id="lastName" placeholder="Nom" required>
+          </div>
+          <div class="form-group">
+            <input type="text" name="first_name" id="firstName" placeholder="Prénom" required>
+          </div>
+          <div class="form-group">
+            <input type="email" name="user_email" id="userEmail" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <input type="text" name="mail_title" id="mailTitle" placeholder="Sujet du message" required>
+          </div>
+          <div class="form-group">
+            <textarea name="message" id="userMessage" placeholder="Votre message..." rows="4" required></textarea>
+          </div>
+          <button type="submit" class="submit-btn" id="submitBtn" disabled>Envoyer</button>
+        </form>
+        <div id="successMsg" class="success-banner" style="display:none">Message envoyé avec succès !</div>
+        <div id="errorMsg" class="error-banner" style="display:none">Erreur lors de l'envoi. Réessayez.</div>
+      </div>
+    </div>
+
+    <div class="player-wrapper" id="player">
+      <button class="close-player" onclick="closePlayer()">
+        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
       <div class="progress-area">
-        <div class="progress-bar" id="progressArea">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
+        <div class="progress-bar" id="progressArea"><div class="progress-fill" id="progressFill"></div></div>
       </div>
       <div class="main-controls">
         <div class="track-info">
-          <div class="album-art" id="pArt">
-            <div class="visualizer" id="visualizer">
-              <span></span><span></span><span></span><span></span>
-            </div>
-          </div>
+          <div class="album-art" id="pArt"><div class="visualizer" id="visualizer"><span></span><span></span><span></span><span></span></div></div>
           <div class="track-text">
             <div id="pTitle">Titre</div>
             <div id="pArtist">Artiste</div>
           </div>
         </div>
         <div class="playback-btns">
-          <button class="btn hide-mobile" onclick="prev()">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M7 6c.55 0 1 .45 1 1v10c0 .55-.45 1-1 1s-1-.45-1-1V7c0-.55.45-1 1-1zm3.66 6.82l5.77 4.07c.66.47 1.58-.01 1.58-.82V7.93c0-.81-.92-1.28-1.58-.82l-5.77 4.07c-.57.4-.57 1.24 0 1.64z"
-              />
-            </svg>
-          </button>
-          <button class="play-main" id="playBtn">
-            <svg id="playIcon" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </button>
-          <button class="btn" onclick="next()">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M17 6c.55 0 1 .45 1 1v10c0 .55-.45 1-1 1s-1-.45-1-1V7c0-.55.45-1 1-1zM7.57 17.71l5.77-4.07c.56-.4.56-1.24 0-1.63L7.57 7.94c-.65-.47-1.57.01-1.57.82v8.13c0 .81.91 1.28 1.57.82z"
-              />
-            </svg>
-          </button>
+          <button class="btn hide-mobile" onclick="prev()"><svg viewBox="0 0 24 24"><path d="M7 6c.55 0 1 .45 1 1v10c0 .55-.45 1-1 1s-1-.45-1-1V7c0-.55.45-1 1-1zm3.66 6.82l5.77 4.07c.66.47 1.58-.01 1.58-.82V7.93c0-.81-.92-1.28-1.58-.82l-5.77 4.07c-.57.4-.57 1.24 0 1.64z"/></svg></button>
+          <button class="play-main" id="playBtn"><svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></button>
+          <button class="btn" onclick="next()"><svg viewBox="0 0 24 24"><path d="M17 6c.55 0 1 .45 1 1v10c0 .55-.45 1-1 1s-1-.45-1-1V7c0-.55.45-1 1-1zM7.57 17.71l5.77-4.07c.56-.4.56-1.24 0-1.63L7.57 7.94c-.65-.47-1.57.01-1.57.82v8.13c0 .81.91 1.28 1.57.82z"/></svg></button>
         </div>
         <div class="extras hide-mobile" id="timeDisplay">0%</div>
       </div>
