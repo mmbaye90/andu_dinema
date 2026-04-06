@@ -67,16 +67,12 @@ function showPage(pageId) {
 }
 
 // --- FAVORITES ---
-
 function toggleFavorite(index, event) {
     if (event) event.stopPropagation();
     
-    // 1. Inverse l'état dans la donnée source
     DATA[index].fav = !DATA[index].fav;
     const isNowFav = DATA[index].fav;
     
-    // 2. Synchronisation globale de TOUS les boutons cœurs de cette musique dans le DOM
-    // On cherche tous les boutons qui ont l'attribut onclick pointant sur cet index
     const allMatchingButtons = document.querySelectorAll(`.heart-btn[onclick*="toggleFavorite(${index},"]`);
     
     allMatchingButtons.forEach(btn => {
@@ -87,12 +83,11 @@ function toggleFavorite(index, event) {
         }
     });
     
-    // 3. Si on est sur la page bibliothèque, on rafraîchit la liste (pour faire disparaître la carte si décochée)
     if (document.getElementById("page-library").classList.contains("active")) {
-        // Petit délai pour laisser l'animation se faire avant de supprimer la carte de la vue favoris
         setTimeout(() => renderLibrary(), 200);
     }
 }
+
 // --- RENDU ---
 const islamicIcons = [
     '<path d="M12 2L9 9H2l5.5 4L5 22l7-5 7 5-2.5-9 5.5-4h-7z"/>',
@@ -268,12 +263,12 @@ function toggleContactModal(show) {
 document.addEventListener('keydown', (e) => { if (e.key === "Escape") toggleContactModal(false); });
 window.onclick = (e) => { if (e.target.id === 'contactModal') toggleContactModal(false); };
 
-// --- EMAILJS & VALIDATION ---
+// --- SECURE FORM SUBMISSION (NETLIFY FUNCTIONS) ---
 const contactForm = document.getElementById('contactForm');
 const submitBtn = document.getElementById('submitBtn');
 
 if (contactForm) {
-    contactForm.onsubmit = function(event) {
+    contactForm.onsubmit = async function(event) {
         event.preventDefault();
         submitBtn.innerText = "Envoi en cours...";
         submitBtn.disabled = true;
@@ -286,32 +281,34 @@ if (contactForm) {
             message: document.getElementById('userMessage').value
         };
 
-// Utilisation des variables de CONFIG au lieu des IDs en dur
-        emailjs.send(CONFIG.EMAILJS_SERVICE_ID, CONFIG.EMAILJS_TEMPLATE_ID, templateParams)
-            .then(function(response) {
-                console.log('ENFIN RÉUSSI !', response.status, response.text);
+        try {
+            // Appel à ta fonction serveur Netlify
+            const response = await fetch('/.netlify/functions/send-mail', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(templateParams)
+            });
+
+            if (response.ok) {
                 document.getElementById('successMsg').style.display = 'block';
-                if(document.getElementById('errorMsg')) document.getElementById('errorMsg').style.display = 'none';
-                
+                document.getElementById('errorMsg').style.display = 'none';
                 contactForm.reset();
                 validateForm();
-
                 setTimeout(() => {
                     toggleContactModal(false);
                     document.getElementById('successMsg').style.display = 'none';
                     submitBtn.innerText = "Envoyer";
                 }, 3000);
-
-            }, function(error) {
-                console.error('ERREUR EMAILJS :', error);
-                const errBanner = document.getElementById('errorMsg');
-                if(errBanner) {
-                    errBanner.innerText = "Erreur : " + (error.text || "Vérifiez vos IDs");
-                    errBanner.style.display = 'block';
-                }
-                submitBtn.innerText = "Réessayer";
-                submitBtn.disabled = false;
-            });
+            } else {
+                throw new Error("Erreur serveur lors de l'envoi");
+            }
+        } catch (error) {
+            console.error("Erreur envoi:", error);
+            document.getElementById('errorMsg').style.display = 'block';
+            document.getElementById('successMsg').style.display = 'none';
+            submitBtn.innerText = "Réessayer";
+            submitBtn.disabled = false;
+        }
     };
 
     function validateForm() {
