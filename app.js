@@ -286,9 +286,8 @@ if (contactForm) {
             message: document.getElementById('userMessage').value
         };
 
-        // Envoi avec le nouveau Template ID fourni
-// Utilisation du nouvel ID : template_kwx176h
-        emailjs.send('service_342yc28', 'template_kwx176h', templateParams)
+// Utilisation des variables de CONFIG au lieu des IDs en dur
+        emailjs.send(CONFIG.EMAILJS_SERVICE_ID, CONFIG.EMAILJS_TEMPLATE_ID, templateParams)
             .then(function(response) {
                 console.log('ENFIN RÉUSSI !', response.status, response.text);
                 document.getElementById('successMsg').style.display = 'block';
@@ -307,7 +306,6 @@ if (contactForm) {
                 console.error('ERREUR EMAILJS :', error);
                 const errBanner = document.getElementById('errorMsg');
                 if(errBanner) {
-                    // Affiche l'erreur exacte renvoyée par le serveur
                     errBanner.innerText = "Erreur : " + (error.text || "Vérifiez vos IDs");
                     errBanner.style.display = 'block';
                 }
